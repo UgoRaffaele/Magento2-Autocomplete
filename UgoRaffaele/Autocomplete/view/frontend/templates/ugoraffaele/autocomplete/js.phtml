@@ -1,0 +1,262 @@
+<?php
+
+	// @codingStandardsIgnoreFile
+
+	$helper = $this->helper('UgoRaffaele\Autocomplete\Helper\Data');
+
+?>
+
+<?php if ($helper->isEnabled()) : ?>
+
+	<style type="text/css">
+		#search_autocomplete {
+			display: none !important;
+		}
+		.tt-dataset-categories .tt-suggestions .tt-suggestion > a {
+			color: <?php /* @noEscape */ echo $helper->getCategoryResultTextColor() ?>;
+		}
+		.tt-dataset-categories .tt-suggestions .tt-suggestion > a:hover {
+			color: <?php /* @noEscape */ echo $helper->getCategoryResultTextColorHover() ?>;
+		}
+		.tt-dataset-categories .tt-suggestions .tt-suggestion {
+			background-color: <?php /* @noEscape */ echo $helper->getCategoryResultBackground() ?>; 
+		}
+		.tt-dataset-categories .empty {
+			color: <?php /* @noEscape */ echo $helper->getCategoryResultTextColor() ?>;   
+		}
+		.tt-dataset-categories .empty:hover {
+			color: <?php /* @noEscape */ echo $helper->getCategoryResultTextColorHover() ?>; 
+		}
+		.tt-dataset-products .empty {
+			color: <?php /* @noEscape */ echo $helper->getProductResultTextColor() ?>;   
+		}
+		.tt-dataset-products .empty:hover {
+			color: <?php /* @noEscape */ echo $helper->getProductResultTextHoverColor() ?>; 
+		}
+		.tt-dataset-products .tt-suggestions .tt-suggestion .info > span {
+			color: <?php /* @noEscape */ echo $helper->getProductResultTextColor() ?>;
+		}
+		.tt-dataset-products .tt-suggestions .tt-suggestion > a:hover .info > span {
+			color: <?php /* @noEscape */ echo $helper->getProductResultTextHoverColor() ?>; 
+		}
+		.tt-dataset-products .tt-suggestions .tt-suggestion {
+			background-color: <?php /* @noEscape */ echo $helper->getProductResultBackground() ?>; 
+		}
+		.tt-dataset-products .tt-suggestions .tt-suggestion .info .price-box .price {
+			color: <?php /* @noEscape */ echo $helper->getProductResultPriceTextColor() ?>;
+		}
+		.tt-dataset-products .tt-suggestions .tt-suggestion > a:hover .info .price-box .price {
+			color: <?php /* @noEscape */ echo $helper->getProductResultPriceTextColorHover() ?>; 
+		}
+		.tt-dataset-products .tt-suggestions .tt-suggestion .info .price-box .price-label {
+			color: <?php /* @noEscape */ echo $helper->getProductResultPriceLabelTextColor() ?>; 
+		}
+		.tt-dataset-products .tt-suggestions .tt-suggestion > a:hover .info .price-box .price-label {
+			color: <?php /* @noEscape */ echo $helper->getProductResultPriceLabelTextHoverColor() ?>;  
+		}
+	</style>
+
+	<script type="text/javascript">
+
+		require(['jquery','ugoraffaele/typehead'], function($) {
+
+			jQuery('#search').removeClass('required-entry');
+
+			var priceFormat = <?php /* @noEscape */ echo $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode($helper->getJsPriceFormat()) ?>;
+			var baseUrl = '<?php /* @noEscape */ echo $helper->getBaseUrl() ?>';
+			var baseUrlMedia = '<?php /* @noEscape */ echo $helper->getBaseUrlMedia() ?>';
+
+			var catheadertext = '<?php /* @noEscape */ echo $helper->getCategoryHeaderText() ?>';
+			var proheadertext = '<?php /* @noEscape */ echo $helper->getProductHeaderText() ?>';
+			var profootertext = '<?php /* @noEscape */ echo $helper->getProductFooterText() ?>';
+
+			var catheadertextcolor = '<?php /* @noEscape */ echo $helper->getCategoryHeaderTextColor() ?>';
+			var catheaderbackground = '<?php /* @noEscape */ echo $helper->getCategoryHeaderBackground() ?>';
+			var catresultbackground = '<?php /* @noEscape */ echo $helper->getCategoryResultBackground() ?>';
+			var catresulttexthover = '<?php /* @noEscape */ echo $helper->getCategoryResultTextColorHover() ?>';
+
+			var proheadertextcolor = '<?php /* @noEscape */ echo $helper->getProductHeaderTextColor() ?>';
+			var proheaderbackground = '<?php /* @noEscape */ echo $helper->getProductHeaderBackground() ?>';
+			var proresulttextcolor = '<?php /* @noEscape */ echo $helper->getProductResultTextColor() ?>';
+			var proresultbackground = '<?php /* @noEscape */ echo $helper->getProductResultBackground() ?>';
+			var proresulttexthover = '<?php /* @noEscape */ echo $helper->getProductResultTextHoverColor() ?>';
+
+			<?php if ($helper->getViewProductConf() != 0) : ?>
+				var products = new Bloodhound({
+				    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'sku'),
+				    queryTokenizer: Bloodhound.tokenizers.whitespace,
+				    <?php if ($helper->getUseLocalStorage()) : ?>
+				    prefetch: {
+						url: baseUrl + '/autocomplete/product/json',
+						ttl: <?php /* @noEscape */ echo $helper->getCacheLifetime() * 1000 ?> // milliseconds
+				    },
+				    <?php else : ?>
+				    remote: {
+				    	url: baseUrl +'/autocomplete/product/json'
+				    },
+				    <?php endif; ?>
+				    limit: <?php /* @noEscape */ echo $helper->getLimit() ?>
+				});
+				products.initialize();
+			<?php endif; ?>
+
+			<?php if ($helper->getViewCategoryConf() != 0) : ?>
+				var categories = new Bloodhound({
+				    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+				    queryTokenizer: Bloodhound.tokenizers.whitespace,
+				    <?php if ($helper->getUseLocalStorage()) : ?>
+				    prefetch: {
+						url: baseUrl + '/autocomplete/category/json',
+						ttl: <?php /* @noEscape */ echo $helper->getCacheLifetime() * 1000 ?> // milliseconds
+				    },
+				    <?php else : ?>
+				    remote: {
+				    	url: baseUrl + '/autocomplete/category/json'
+				    },
+				    <?php endif; ?>
+				    limit: <?php /* @noEscape */ echo $helper->getCategotyLimit() ?>
+				});
+				categories.initialize();
+			<?php endif; ?>
+
+			<?php if ($helper->getViewCategoryConf() != 0 || $helper->getViewProductConf() != 0) : ?>
+				jQuery('#search').typeahead({
+					hint: true,
+					highlight: true,
+					minLength: <?php /* @noEscape */ echo $helper->getMinLength() ?>
+				},
+			<?php if ($helper->getViewCategoryConf() != 0) : ?>
+				{
+					name: 'categories',
+					display: 'name',
+					source: categories.ttAdapter(),
+					templates: {
+						header: '<span style="padding-top: 5px; padding-bottom: 5px; display: inline-block; background: '+ catheaderbackground +'; color: '+ catheadertextcolor +'; width: 100%;">' + 
+								'<span style="margin-left: 5px;">'+ catheadertext +'</span>' +
+							'</span>',
+						empty: '<div class="empty" style="padding-left: 12px;" style="background: '+ catresultbackground +';">' +
+						        '<?php /* @noEscape */ echo __('Your search returned no results.') ?>' +
+						    '</div>',
+						suggestion: function(category) {
+							return '<a href="'+ category.url_path +'">' +
+									'<span class="name" style="display: inline-block; width: 100%;">'+ category.name +'</span>' +
+									'<div class="clearer" />' +
+								'</a>';
+					    }
+					}
+				}
+			<?php endif; ?>
+			<?php if ($helper->getViewProductConf() != 0 && $helper->getViewCategoryConf() != 0) : ?>
+				,
+			<?php endif; ?>
+			<?php if ($helper->getViewProductConf() != 0) : ?>
+				{
+					name: 'products',
+					display: 'name',
+					source: products.ttAdapter(),
+					templates: {
+						header: '<span style="padding-top: 5px; padding-bottom: 5px; display: inline-block; background: '+ proheaderbackground +'; color: '+ proheadertextcolor +'; width: 100%;">' + 
+								'<span style="margin-left: 5px;">'+ proheadertext +'</span>' +
+							'</span>',
+						footer: '<div style="margin: 10px; min-width: 200px; text-align: center;">' + 
+								'<button class="btn action primary" onclick="jQuery(\'#search\').closest(\'form\').submit();">'+ profootertext +'</button>' +
+							'</div>',
+						empty: '<div class="empty" style="padding-left: 12px;" style="background: '+ proresultbackground +';">' +
+						        '<?php /* @noEscape */ echo __('Your search returned no results.') ?>' +
+						    '</div>',
+						suggestion: function(product) {
+							if (product.image && product.image != 'no_selection') {
+								img = product.image;
+							}
+							return '<a href="' + product.url_path + '">' +
+									'<div class="image search-product-img">' +
+										'<img src="'+ img +'" />' +
+									'</div>' +
+									'<div class="info" style="padding-left: 5px">' +
+										'<span id="name_'+ product.entity_id +'" class="name">'+ product.name +'</span>' +
+										'<div class="price-box">'+ formatSuggestionPrice(product, priceFormat) +'</div>' +
+									'</div>' +
+									'<div class="clearer" />' +
+								'</a>';
+						}
+					}
+				}
+			<?php endif; ?>
+				);
+			<?php endif; ?>
+
+			function formatSuggestionPrice(product, priceFormat) {
+
+			    var price = '';
+
+			    switch (product.type_id) {
+			        case 'grouped':
+			        case 'configurable':
+			        case 'bundle':
+						price = '<span class="price-label" style="font-size: 14px;"><?php /* @noEscape */ echo __('Starting at') ?></span>' +
+								'&nbsp;' +
+								'<span class="price" style="font-weight: bold; line-height: 0; font-size: 14px;">'+ formatCurrency(product.price, priceFormat, false) +'</span>';
+						break;
+			        default:
+						if (parseFloat(product.final_price) < parseFloat(product.price)) {
+							price = '<span class="old-price">' +
+								'<span class="price" style="font-size: 14px;">'+ formatCurrency(product.price, priceFormat, false) +'</span>' +
+							'</span>' +
+							'&nbsp;' +
+							'<span class="special-price">' +
+								'<span class="price" style="font-weight: bold; line-height: 0; font-size: 14px;">'+ formatCurrency(product.final_price, priceFormat, false) +'</span>' +
+							'</span>';
+						} else {
+							price = '<span class="price" style="font-weight: bold; line-height: 0; font-size: 14px;">'+ formatCurrency(product.price, priceFormat, false) +'</span>';
+						}
+			    }
+
+			    return price;
+
+			}
+
+			function formatCurrency(price, format, showPlus){
+
+			    var precision = isNaN(format.precision = Math.abs(format.precision)) ? 2 : format.precision;
+			    var requiredPrecision = isNaN(format.requiredPrecision = Math.abs(format.requiredPrecision)) ? 2 : format.requiredPrecision;
+			    precision = requiredPrecision;
+			    var integerRequired = isNaN(format.integerRequired = Math.abs(format.integerRequired)) ? 1 : format.integerRequired;
+			    var decimalSymbol = format.decimalSymbol == undefined ? "," : format.decimalSymbol;
+			    var groupSymbol = format.groupSymbol == undefined ? "." : format.groupSymbol;
+			    var groupLength = format.groupLength == undefined ? 3 : format.groupLength;
+
+			    var s = '';
+			    if (showPlus == undefined || showPlus == true) {
+			        s = price < 0 ? "-" : ( showPlus ? "+" : "");
+			    } else if (showPlus == false) {
+			        s = '';
+			    }
+
+			    var i = parseInt(price = Math.abs(+price || 0).toFixed(precision)) + "";
+			    var pad = (i.length < integerRequired) ? (integerRequired - i.length) : 0;
+			    while (pad) { i = '0' + i; pad--; }
+			    j = (j = i.length) > groupLength ? j % groupLength : 0;
+			    re = new RegExp("(\\d{" + groupLength + "})(?=\\d)", "g");
+
+			    /**
+			     * replace(/-/, 0) is only for fixing Safari bug which appears
+			     * when Math.abs(0).toFixed() executed on "0" number.
+			     * Result is "0.-0" :(
+			     */
+			    var r = (j ? i.substr(0, j) + groupSymbol : "") + i.substr(j).replace(re, "$1" + groupSymbol) + (precision ? decimalSymbol + Math.abs(price - i).toFixed(precision).replace(/-/, 0).slice(2) : "")
+			    var pattern = '';
+			    if (format.pattern.indexOf('{sign}') == -1) {
+			        pattern = s + format.pattern;
+			    } else {
+			        pattern = format.pattern.replace('{sign}', s);
+			    }
+
+			    return pattern.replace('%s', r).replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+			}
+
+		});
+
+	</script>
+
+<?php endif; ?>

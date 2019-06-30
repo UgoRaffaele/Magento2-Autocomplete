@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ugoraffaele_autocomplete>
+            <general>
+                <enable_in_frontend>1</enable_in_frontend>
+                <showproducts>1</showproducts>
+                <limit>3</limit>
+                <showcategories>1</showcategories>
+                <catlimit>3</catlimit>
+                <min_length>1</min_length>
+                <cache_lifetime>86400</cache_lifetime>
+                <use_local_storage>1</use_local_storage>
+            </general>
+            <design>
+                <cat_header_textfont>CATEGORIES</cat_header_textfont>
+                <cat_header_text>#FFF</cat_header_text>
+                <cat_header_background>#3D3D3D</cat_header_background>
+                <cat_result_text>#3D3D3D</cat_result_text>
+                <cat_result_text_hover>#000</cat_result_text_hover>
+                <cat_result_background>#FFF</cat_result_background>
+                <pro_header_textfont>PRODUCTS</pro_header_textfont>
+                <pro_footer_textfont>VIEW MORE RESULTS</pro_footer_textfont>
+                <pro_header_text>#FFF</pro_header_text>
+                <pro_header_background>#3D3D3D</pro_header_background>
+                <pro_result_text>#3D3D3D</pro_result_text>
+                <pro_result_text_hover>#000</pro_result_text_hover>
+                <pro_result_background>#FFF</pro_result_background>
+                <pro_result_price_color>#3D3D3D</pro_result_price_color>
+                <pro_result_price_color_hover>#000</pro_result_price_color_hover>
+                <pro_result_price_label_color>#3D3D3D</pro_result_price_label_color>
+                <pro_result_price_label_color_hov>#000</pro_result_price_label_color_hov>
+            </design>
+        </ugoraffaele_autocomplete>
+    </default>
+</config>

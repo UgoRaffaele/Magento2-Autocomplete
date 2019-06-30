@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="ugoraffaele" translate="label" sortOrder="100">
+            <label>UgoRaffaele</label>
+        </tab>
+        <section id="ugoraffaele_autocomplete" translate="label" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Search Suggestions</label>
+            <tab>ugoraffaele</tab>
+            <resource>UgoRaffaele_Autocomplete::system_config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <attribute type="expanded">1</attribute>
+                <field id="enable_in_frontend" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="showproducts" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>View Product Suggestions</label>
+                    <comment><![CDATA[Include Products in Search.]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="limit" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Suggestions Limit</label>
+                    <comment><![CDATA[Number of suggestions to display. Defaults to 3.]]></comment>
+                    <validate>validate-greater-than-zero validate-number</validate>
+                    <depends>
+                        <field id="showproducts">1</field>
+                    </depends>
+                </field>
+                <field id="showcategories" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>View Category Suggestions</label>
+                    <comment><![CDATA[Include Categories in Search.]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="catlimit" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Category Suggestions Limit</label>
+                    <comment><![CDATA[Number of suggestions to display. Defaults to 3.]]></comment>
+                    <validate>validate-greater-than-zero validate-number</validate>
+                    <depends>
+                        <field id="showcategories">1</field>
+                    </depends>
+                </field>
+                <field id="min_length" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Minimum Length</label>
+                    <comment><![CDATA[The minimum characters length needed before suggestions start getting rendered. Defaults to 1.]]></comment>
+                    <validate>validate-greater-than-zero validate-number</validate>
+                </field>
+                <field id="cache_lifetime" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cache Lifetime</label>
+                    <comment><![CDATA[The time (in seconds) the prefetched data should be cached in local storage. Defaults to 86400 (1 day).]]></comment>
+                    <validate>validate-greater-than-zero validate-number</validate>
+                </field>
+                <field id="use_local_storage" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use Local Storage</label>
+                    <comment><![CDATA[If the browser supports local storage, the processed data will be cached there to prevent additional network requests on subsequent page loads.]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="design" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Design Settings</label>
+                <attribute type="expanded">0</attribute>
+                <field id="cat_header_textfont" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Categories Header Text</label>
+                    <comment><![CDATA[Enter the Categories Header Text Value. For example: CATEGORIES.]]></comment>
+                </field>
+                <field id="cat_header_text" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Categories Header Text Color</label>
+                    <comment><![CDATA[Select the Categories Header Text Color. For example: #FFF.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+                <field id="cat_header_background" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Categories Header Background Color</label>
+                    <comment><![CDATA[Select the Categories Header Background Color. For example: #3D3D3D.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+                <field id="cat_result_text" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Categories Result Text Color</label>
+                    <comment><![CDATA[Select the Categories Result Text Color. For example: #3D3D3D.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+                <field id="cat_result_text_hover" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Categories Result Text Color (Hover)</label>
+                    <comment><![CDATA[Select the Categories Result Text Color (Hover). For example: #000.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+                <field id="cat_result_background" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Categories Result Text Background Color</label>
+                    <comment><![CDATA[Select the Categories Result Text Background Color. For example: #FFF.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+                <field id="pro_header_textfont" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Products Header Text</label>
+                    <comment><![CDATA[Enter the Products Header Text. For example: PRODUCTS.]]></comment>
+                </field>
+                <field id="pro_footer_textfont" translate="label" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Products Footer Text</label>
+                    <comment><![CDATA[Enter the Products Footer Text. For example: VIEW MORE PRODUCTS.]]></comment>
+                </field>
+                <field id="pro_header_text" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Products Header Text Color</label>
+                    <comment><![CDATA[Select the Products Header Text Color. For example: #FFF.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+                <field id="pro_header_background" translate="label" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Products Header Background Color</label>
+                    <comment><![CDATA[Select the Products Header Background Color. For example: #3D3D3D.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+                <field id="pro_result_text" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Products Result Text Color</label>
+                    <comment><![CDATA[Select the Products Result Text Color. For example: #3D3D3D.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+                <field id="pro_result_text_hover" translate="label" type="text" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Products Result Text Color (Hover)</label>
+                    <comment><![CDATA[Select the Products Result Text Color (Hover). For example: #000.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+                <field id="pro_result_background" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Products Result Text Background Color</label>
+                    <comment><![CDATA[Select the Products Result Text Background Color. For example: #FFF.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+                <field id="pro_result_price_color" translate="label" type="text" sortOrder="65" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Products Result Price Text Color</label>
+                    <comment><![CDATA[Select the Products Result Price Text Color. For example: #3D3D3D.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+                <field id="pro_result_price_color_hover" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Products Result Price Text Color (Hover)</label>
+                    <comment><![CDATA[Select the Products Result Price Text Color (Hover). For example: #000.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+                <field id="pro_result_price_label_color" translate="label" type="text" sortOrder="75" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Products Result Price Label Text Color</label>
+                    <comment><![CDATA[Select the Products Result Price Label Text Color. For example: #3D3D3D.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+                <field id="pro_result_price_label_color_hov" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Products Result Price Label Text Color (Hover)</label>
+                    <comment><![CDATA[Select the Products Result Price Label Text Color (Hover). For example: #000.]]></comment>
+                    <frontend_model>UgoRaffaele\Autocomplete\Block\Color</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
